@@ -7,7 +7,8 @@ import {
   BarChart, 
   Settings,
   Menu,
-  X
+  X,
+  DollarSign
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -63,6 +64,18 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               >
                 <LayoutDashboard className="h-5 w-5 text-budget-purple" />
                 {sidebarOpen && <span className="ml-3">Dashboard</span>}
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/income"
+                className={cn(
+                  "flex items-center p-3 text-gray-700 rounded-md hover:bg-accent transition-colors",
+                  !sidebarOpen && "justify-center"
+                )}
+              >
+                <DollarSign className="h-5 w-5 text-budget-purple" />
+                {sidebarOpen && <span className="ml-3">Income</span>}
               </Link>
             </li>
             <li>
