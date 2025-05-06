@@ -65,7 +65,14 @@ const SpendingChart = () => {
                 ))}
               </Pie>
               <Tooltip 
-                formatter={(value) => [`$${value.toFixed(2)}`, 'Amount']}
+                formatter={(value) => {
+                  // Handle when value is a string or number
+                  if (typeof value === 'number') {
+                    return [`$${value.toFixed(2)}`, 'Amount'];
+                  } else {
+                    return [`$${value}`, 'Amount'];
+                  }
+                }}
                 contentStyle={{ background: "white", borderRadius: "8px", border: "1px solid #e2e8f0" }}
               />
               <Legend 
