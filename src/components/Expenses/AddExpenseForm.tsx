@@ -10,7 +10,7 @@ import {
   SelectValue
 } from "@/components/ui/select";
 import { categories } from "@/lib/data";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 
 interface AddExpenseFormProps {
   onClose?: () => void;
@@ -99,7 +99,7 @@ const AddExpenseForm: React.FC<AddExpenseFormProps> = ({ onClose }) => {
             </SelectTrigger>
             <SelectContent>
               {categories.map((cat) => (
-                <SelectItem key={cat.id} value={cat.name}>
+                <SelectItem key={cat.name} value={cat.name}>
                   {cat.name}
                 </SelectItem>
               ))}

@@ -45,7 +45,8 @@ export type ExpenseCategory =
   | "Utilities"
   | "Rent"
   | "Salary"
-  | "Other";
+  | "Other"
+  | string; // Allow custom categories
 
 export type IncomeFrequency = "one-time" | "weekly" | "bi-weekly" | "monthly" | "quarterly" | "annually";
 
