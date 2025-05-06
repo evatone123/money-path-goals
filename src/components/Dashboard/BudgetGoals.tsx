@@ -1,13 +1,17 @@
 
 import { Progress } from "@/components/ui/progress";
 import { budgetGoals, getCategoryColor } from "@/lib/data";
+import { useState } from "react";
 
 const BudgetGoals = () => {
+  // Use useState to maintain local state for goals
+  const [goals] = useState(budgetGoals);
+  
   return (
     <div className="budget-card animate-fade-in">
       <h3 className="font-medium text-lg mb-4">Budget Goals</h3>
       <div className="space-y-4">
-        {budgetGoals.map((goal) => {
+        {goals.map((goal) => {
           const percentSpent = Math.min((goal.spent / goal.amount) * 100, 100);
           const isOverBudget = goal.spent > goal.amount;
           

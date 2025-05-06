@@ -1,11 +1,31 @@
 
+import { useState } from "react";
 import Layout from "@/components/Layout";
 import { budgetGoals, getCategoryColor } from "@/lib/data";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import AddBudgetGoalForm from "@/components/Budgets/AddBudgetGoalForm";
 
 const Budgets = () => {
+  const [goals, setGoals] = useState(budgetGoals);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const handleAddGoal = (newGoal) => {
+    setGoals([...goals, newGoal]);
+    setIsDialogOpen(false);
+  };
+
+  const handleCancelAddGoal = () => {
+    setIsDialogOpen(false);
+  };
+
   return (
     <Layout>
       <div className="mb-6 flex justify-between items-center">
@@ -13,14 +33,14 @@ const Budgets = () => {
           <h2 className="text-3xl font-bold">Budget Goals</h2>
           <p className="text-gray-500">Track your spending against budget goals</p>
         </div>
-        <Button className="gradient-purple">
+        <Button className="gradient-purple" onClick={() => setIsDialogOpen(true)}>
           <PlusCircle className="mr-2 h-4 w-4" />
           Add Goal
         </Button>
       </div>
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {budgetGoals.map(goal => {
+        {goals.map(goal => {
           const percentSpent = Math.min((goal.spent / goal.amount) * 100, 100);
           const isOverBudget = goal.spent > goal.amount;
           const remaining = goal.amount - goal.spent;
@@ -70,6 +90,15 @@ const Budgets = () => {
           );
         })}
       </div>
+
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Add Budget Goal</DialogTitle>
+          </DialogHeader>
+          <AddBudgetGoalForm onSubmit={handleAddGoal} onCancel={handleCancelAddGoal} />
+        </DialogContent>
+      </Dialog>
     </Layout>
   );
 };
