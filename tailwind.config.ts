@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,6 +62,24 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				budget: {
+					purple: "#9b87f5",
+					"purple-dark": "#7E69AB",
+					"purple-light": "#E5DEFF",
+					green: "#4CAF50",
+					red: "#F44336",
+					yellow: "#FFC107",
+					blue: "#2196F3",
+				},
+				expense: {
+					food: "#FF9800",
+					transport: "#2196F3",
+					entertainment: "#E91E63",
+					utilities: "#4CAF50",
+					shopping: "#9C27B0",
+					health: "#F44336",
+					other: "#607D8B"
 				}
 			},
 			borderRadius: {
@@ -84,11 +103,20 @@ export default {
 					to: {
 						height: '0'
 					}
-				}
+				},
+				'fade-in': {
+					'0%': {
+						opacity: '0',
+					},
+					'100%': {
+						opacity: '1',
+					},
+				},
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'fade-in': 'fade-in 0.5s ease-out',
 			}
 		}
 	},
