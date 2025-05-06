@@ -1,16 +1,18 @@
 
 import { CircleDollarSign, TrendingUp, TrendingDown } from "lucide-react";
-import { getTotalSpent, getTotalBudget } from "@/lib/data";
+import { getTotalSpent, getTotalBudget, getTotalIncome, getMonthlyNetFlow } from "@/lib/data";
 import { cn } from "@/lib/utils";
 
 export const Summary = () => {
   const totalSpent = getTotalSpent();
   const totalBudget = getTotalBudget();
+  const totalIncome = getTotalIncome();
+  const netFlow = getMonthlyNetFlow();
   const remaining = totalBudget - totalSpent;
   const percentSpent = (totalSpent / totalBudget) * 100;
   
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 animate-fade-in">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 animate-fade-in">
       {/* Total Budget */}
       <div className="budget-card">
         <div className="flex items-center justify-between mb-4">
@@ -22,6 +24,20 @@ export const Summary = () => {
         <p className="text-3xl font-bold">${totalBudget.toFixed(2)}</p>
         <div className="mt-2 text-sm">
           <span className="text-gray-500">Monthly budget across all categories</span>
+        </div>
+      </div>
+      
+      {/* Income */}
+      <div className="budget-card">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="font-medium text-gray-500">Income</h3>
+          <div className="h-10 w-10 rounded-full bg-budget-green/10 flex items-center justify-center">
+            <TrendingUp className="h-5 w-5 text-budget-green" />
+          </div>
+        </div>
+        <p className="text-3xl font-bold">${totalIncome.toFixed(2)}</p>
+        <div className="mt-2 text-sm">
+          <span className="text-gray-500">Monthly income</span>
         </div>
       </div>
       
@@ -48,26 +64,30 @@ export const Summary = () => {
         </div>
       </div>
       
-      {/* Remaining */}
+      {/* Net Cash Flow */}
       <div className="budget-card">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="font-medium text-gray-500">Remaining</h3>
-          <div className="h-10 w-10 rounded-full bg-budget-green/10 flex items-center justify-center">
-            <TrendingUp className="h-5 w-5 text-budget-green" />
+          <h3 className="font-medium text-gray-500">Cash Flow</h3>
+          <div className={cn(
+            "h-10 w-10 rounded-full flex items-center justify-center",
+            netFlow >= 0 ? "bg-budget-green/10" : "bg-budget-red/10"
+          )}>
+            {netFlow >= 0 ? (
+              <TrendingUp className="h-5 w-5 text-budget-green" />
+            ) : (
+              <TrendingDown className="h-5 w-5 text-budget-red" />
+            )}
           </div>
         </div>
         <p className={cn(
           "text-3xl font-bold",
-          remaining < 0 ? "text-budget-red" : ""
-        )}>${remaining.toFixed(2)}</p>
+          netFlow >= 0 ? "text-budget-green" : "text-budget-red"
+        )}>${Math.abs(netFlow).toFixed(2)}</p>
         <div className="mt-2 text-sm">
           <span className={cn(
-            "text-gray-500",
-            remaining < 0 ? "text-budget-red" : ""
+            netFlow >= 0 ? "text-budget-green" : "text-budget-red"
           )}>
-            {remaining < 0 
-              ? "You've exceeded your budget" 
-              : "Available to spend this month"}
+            {netFlow >= 0 ? "Net positive flow" : "Net negative flow"}
           </span>
         </div>
       </div>

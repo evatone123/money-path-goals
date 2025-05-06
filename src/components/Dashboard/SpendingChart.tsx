@@ -25,7 +25,7 @@ const SpendingChart = () => {
             ))}
           </Pie>
           <Tooltip 
-            formatter={(value) => [`$${value.toFixed(2)}`, 'Amount']}
+            formatter={(value) => [`$${typeof value === 'number' ? value.toFixed(2) : value}`, 'Amount']}
           />
           <Legend />
         </PieChart>

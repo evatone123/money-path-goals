@@ -30,8 +30,7 @@ const BudgetGoals = () => {
               </div>
               <Progress 
                 value={percentSpent} 
-                className={isOverBudget ? "bg-gray-100" : ""}
-                indicatorClassName={isOverBudget ? "bg-budget-red" : ""} 
+                className={`${isOverBudget ? "bg-gray-100" : ""}`}
               />
             </div>
           );

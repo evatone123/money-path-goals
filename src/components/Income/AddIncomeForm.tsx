@@ -9,24 +9,23 @@ import {
   SelectTrigger,
   SelectValue
 } from "@/components/ui/select";
-import { categories } from "@/lib/data";
 import { useToast } from "@/components/ui/use-toast";
 
-interface AddExpenseFormProps {
-  onClose?: () => void;
+interface AddIncomeFormProps {
+  onSuccess?: () => void;
 }
 
-const AddExpenseForm: React.FC<AddExpenseFormProps> = ({ onClose }) => {
+const AddIncomeForm: React.FC<AddIncomeFormProps> = ({ onSuccess }) => {
   const { toast } = useToast();
   const [amount, setAmount] = useState("");
   const [description, setDescription] = useState("");
-  const [category, setCategory] = useState("");
+  const [frequency, setFrequency] = useState("monthly");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
     // Validation
-    if (!amount || !description || !category) {
+    if (!amount || !description || !frequency) {
       toast({
         title: "Error",
         description: "Please fill out all fields",
@@ -37,23 +36,23 @@ const AddExpenseForm: React.FC<AddExpenseFormProps> = ({ onClose }) => {
 
     // In a real app, this would save to a database
     toast({
-      title: "Expense added",
+      title: "Income added",
       description: `Added $${amount} for ${description}`,
     });
     
     // Reset form
     setAmount("");
     setDescription("");
-    setCategory("");
+    setFrequency("monthly");
     
-    if (onClose) {
-      onClose();
+    if (onSuccess) {
+      onSuccess();
     }
   };
 
   return (
     <div className="budget-card">
-      <h3 className="font-medium text-lg mb-4">Add New Expense</h3>
+      <h3 className="font-medium text-lg mb-4">Add New Income</h3>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label htmlFor="amount" className="block text-sm font-medium text-gray-700 mb-1">
@@ -83,34 +82,35 @@ const AddExpenseForm: React.FC<AddExpenseFormProps> = ({ onClose }) => {
           <Input
             id="description"
             type="text"
-            placeholder="What did you spend on?"
+            placeholder="Income source"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
         </div>
         
         <div>
-          <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-1">
-            Category
+          <label htmlFor="frequency" className="block text-sm font-medium text-gray-700 mb-1">
+            Frequency
           </label>
-          <Select value={category} onValueChange={setCategory}>
+          <Select value={frequency} onValueChange={setFrequency}>
             <SelectTrigger>
-              <SelectValue placeholder="Select category" />
+              <SelectValue placeholder="Select frequency" />
             </SelectTrigger>
             <SelectContent>
-              {categories.map((cat) => (
-                <SelectItem key={cat.id} value={cat.name}>
-                  {cat.name}
-                </SelectItem>
-              ))}
+              <SelectItem value="one-time">One-time</SelectItem>
+              <SelectItem value="weekly">Weekly</SelectItem>
+              <SelectItem value="bi-weekly">Bi-weekly</SelectItem>
+              <SelectItem value="monthly">Monthly</SelectItem>
+              <SelectItem value="quarterly">Quarterly</SelectItem>
+              <SelectItem value="annually">Annually</SelectItem>
             </SelectContent>
           </Select>
         </div>
         
-        <Button type="submit" className="w-full gradient-purple">Add Expense</Button>
+        <Button type="submit" className="w-full gradient-purple">Add Income</Button>
       </form>
     </div>
   );
 };
 
-export default AddExpenseForm;
+export default AddIncomeForm;

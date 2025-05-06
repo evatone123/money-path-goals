@@ -1,12 +1,16 @@
 
+import { useIsMobile } from "@/hooks/use-mobile";
 import Layout from "@/components/Layout";
 import Summary from "@/components/Dashboard/Summary";
 import SpendingChart from "@/components/Dashboard/SpendingChart";
 import BudgetGoals from "@/components/Dashboard/BudgetGoals";
 import RecentTransactions from "@/components/Dashboard/RecentTransactions";
 import AddExpenseForm from "@/components/Expenses/AddExpenseForm";
+import IncomeSummary from "@/components/Dashboard/IncomeSummary";
 
 const Index = () => {
+  const isMobile = useIsMobile();
+  
   return (
     <Layout>
       <div className="mb-6">
@@ -18,7 +22,10 @@ const Index = () => {
       
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
-          <SpendingChart />
+          <div className={`grid ${isMobile ? 'grid-cols-1' : 'grid-cols-2'} gap-6`}>
+            <SpendingChart />
+            <IncomeSummary />
+          </div>
           <RecentTransactions />
         </div>
         
