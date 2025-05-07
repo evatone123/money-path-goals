@@ -1,4 +1,3 @@
-
 import { v4 as uuidv4 } from 'uuid';
 
 // Types
@@ -6,6 +5,7 @@ export interface Budget {
   id: string;
   category: ExpenseCategory;
   limit: number;
+  currencyCode?: string; // Added currency code
 }
 
 export interface Transaction {
@@ -15,6 +15,7 @@ export interface Transaction {
   category: ExpenseCategory;
   date: Date;
   type: 'expense' | 'income';
+  currencyCode?: string; // Added currency code
 }
 
 export interface Category {
@@ -27,6 +28,7 @@ export interface BudgetGoal {
   category: ExpenseCategory;
   amount: number;
   spent: number;
+  currencyCode?: string; // Added currency code
 }
 
 export interface IncomeSource {
@@ -35,6 +37,13 @@ export interface IncomeSource {
   amount: number;
   frequency: IncomeFrequency;
   date: Date;
+  currencyCode?: string; // Added currency code
+}
+
+export interface Currency {
+  code: string;
+  symbol: string;
+  name: string;
 }
 
 export type ExpenseCategory =
@@ -61,21 +70,31 @@ export const expenseCategories: ExpenseCategory[] = [
   "Other",
 ];
 
+export const currencies: Currency[] = [
+  { code: "USD", symbol: "$", name: "US Dollar" },
+  { code: "EUR", symbol: "€", name: "Euro" },
+  { code: "GBP", symbol: "£", name: "British Pound" },
+  { code: "JPY", symbol: "¥", name: "Japanese Yen" },
+];
+
 export const defaultBudgets: Budget[] = [
   {
     id: "1",
     category: "Food",
     limit: 300,
+    currencyCode: "USD"
   },
   {
     id: "2",
     category: "Entertainment",
     limit: 200,
+    currencyCode: "USD"
   },
   {
     id: "3",
     category: "Shopping",
     limit: 500,
+    currencyCode: "USD"
   },
 ];
 
@@ -102,19 +121,22 @@ export const budgetGoals: BudgetGoal[] = [
     id: "goal-1",
     category: "Food",
     amount: 400,
-    spent: 300
+    spent: 300,
+    currencyCode: "USD"
   },
   {
     id: "goal-2",
     category: "Entertainment",
     amount: 200,
-    spent: 150
+    spent: 150,
+    currencyCode: "USD"
   },
   {
     id: "goal-3",
     category: "Shopping",
     amount: 500,
-    spent: 550
+    spent: 550,
+    currencyCode: "USD"
   }
 ];
 
@@ -125,7 +147,8 @@ export const transactions: Transaction[] = [
     description: "Grocery shopping",
     category: "Food",
     date: new Date(2024, 4, 1),
-    type: "expense"
+    type: "expense",
+    currencyCode: "USD"
   },
   {
     id: "tx-2",
@@ -233,6 +256,17 @@ export const getTotalBudget = (): number => {
   return defaultBudgets.reduce((sum, budget) => sum + budget.limit, 0);
 };
 
+// Get currency symbol by code
+export const getCurrencySymbol = (code: string = "USD"): string => {
+  const currency = currencies.find(c => c.code === code);
+  return currency ? currency.symbol : "$"; // Default to $ if currency not found
+};
+
+export const formatCurrency = (amount: number, currencyCode: string = "USD"): string => {
+  const symbol = getCurrencySymbol(currencyCode);
+  return `${symbol}${amount.toFixed(2)}`;
+};
+
 export const getTotalIncome = (): number => {
   // For simplicity, we'll consider all monthly incomes
   return incomeSources.reduce((sum, source) => sum + source.amount, 0);
@@ -253,4 +287,3 @@ export const getRecentIncome = (limit: number = 5): IncomeSource[] => {
     .sort((a, b) => b.date.getTime() - a.date.getTime())
     .slice(0, limit);
 };
-

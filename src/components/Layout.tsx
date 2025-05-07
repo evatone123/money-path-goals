@@ -1,6 +1,6 @@
 
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { 
   LayoutDashboard, 
   PieChart, 
@@ -8,7 +8,8 @@ import {
   Settings,
   Menu,
   X,
-  DollarSign
+  DollarSign,
+  FolderIcon
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -19,9 +20,14 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const location = useLocation();
   
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
+  };
+
+  const isActive = (path: string) => {
+    return location.pathname === path;
   };
 
   return (
@@ -58,8 +64,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               <Link
                 to="/"
                 className={cn(
-                  "flex items-center p-3 text-gray-700 rounded-md hover:bg-accent transition-colors",
-                  !sidebarOpen && "justify-center"
+                  "flex items-center p-3 rounded-md hover:bg-accent transition-colors",
+                  !sidebarOpen && "justify-center",
+                  isActive("/") && "bg-accent"
                 )}
               >
                 <LayoutDashboard className="h-5 w-5 text-budget-purple" />
@@ -70,8 +77,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               <Link
                 to="/income"
                 className={cn(
-                  "flex items-center p-3 text-gray-700 rounded-md hover:bg-accent transition-colors",
-                  !sidebarOpen && "justify-center"
+                  "flex items-center p-3 rounded-md hover:bg-accent transition-colors",
+                  !sidebarOpen && "justify-center",
+                  isActive("/income") && "bg-accent"
                 )}
               >
                 <DollarSign className="h-5 w-5 text-budget-purple" />
@@ -82,8 +90,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               <Link
                 to="/expenses"
                 className={cn(
-                  "flex items-center p-3 text-gray-700 rounded-md hover:bg-accent transition-colors",
-                  !sidebarOpen && "justify-center"
+                  "flex items-center p-3 rounded-md hover:bg-accent transition-colors",
+                  !sidebarOpen && "justify-center",
+                  isActive("/expenses") && "bg-accent"
                 )}
               >
                 <BarChart className="h-5 w-5 text-budget-purple" />
@@ -94,8 +103,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               <Link
                 to="/budgets"
                 className={cn(
-                  "flex items-center p-3 text-gray-700 rounded-md hover:bg-accent transition-colors",
-                  !sidebarOpen && "justify-center"
+                  "flex items-center p-3 rounded-md hover:bg-accent transition-colors",
+                  !sidebarOpen && "justify-center",
+                  isActive("/budgets") && "bg-accent"
                 )}
               >
                 <PieChart className="h-5 w-5 text-budget-purple" />
@@ -104,10 +114,27 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             </li>
             <li>
               <Link
+                to="/categories"
+                className={cn(
+                  "flex items-center p-3 rounded-md hover:bg-accent transition-colors",
+                  !sidebarOpen && "justify-center",
+                  isActive("/categories") && "bg-accent"
+                )}
+              >
+                <FolderIcon className="h-5 w-5 text-budget-purple" />
+                {sidebarOpen && <span className="ml-3">Categories</span>}
+              </Link>
+            </li>
+
+            {sidebarOpen && <div className="h-px bg-border my-2 mx-3" />}
+            
+            <li>
+              <Link
                 to="/settings"
                 className={cn(
-                  "flex items-center p-3 text-gray-700 rounded-md hover:bg-accent transition-colors",
-                  !sidebarOpen && "justify-center"
+                  "flex items-center p-3 rounded-md hover:bg-accent transition-colors",
+                  !sidebarOpen && "justify-center",
+                  isActive("/settings") && "bg-accent"
                 )}
               >
                 <Settings className="h-5 w-5 text-budget-purple" />

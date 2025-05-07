@@ -1,9 +1,10 @@
+
 import { useState } from "react";
 import Layout from "@/components/Layout";
-import { budgetGoals, getCategoryColor, categories as initialCategories, Category } from "@/lib/data";
+import { budgetGoals, getCategoryColor, categories, formatCurrency } from "@/lib/data";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
-import { PlusCircle, FolderIcon } from "lucide-react";
+import { PlusCircle } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -12,42 +13,25 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import AddBudgetGoalForm from "@/components/Budgets/AddBudgetGoalForm";
-import AddCategoryForm from "@/components/Categories/AddCategoryForm";
 import { useToast } from "@/hooks/use-toast";
 
 const Budgets = () => {
   const [goals, setGoals] = useState(budgetGoals);
-  const [categories, setCategories] = useState(initialCategories);
   const [isGoalDialogOpen, setIsGoalDialogOpen] = useState(false);
-  const [isCategoryDialogOpen, setIsCategoryDialogOpen] = useState(false);
   const { toast } = useToast();
 
   const handleAddGoal = (newGoal) => {
     setGoals([...goals, newGoal]);
     setIsGoalDialogOpen(false);
+    
+    toast({
+      title: "Budget goal added",
+      description: `${newGoal.category} budget goal has been created successfully`,
+    });
   };
 
   const handleCancelAddGoal = () => {
     setIsGoalDialogOpen(false);
-  };
-  
-  const handleAddCategory = (newCategory) => {
-    // Check if category with same name already exists
-    if (categories.some(cat => cat.name.toLowerCase() === newCategory.name.toLowerCase())) {
-      toast({
-        title: "Error",
-        description: "A category with this name already exists.",
-        variant: "destructive"
-      });
-      return;
-    }
-    
-    setCategories([...categories, newCategory]);
-    setIsCategoryDialogOpen(false);
-  };
-  
-  const handleCancelAddCategory = () => {
-    setIsCategoryDialogOpen(false);
   };
 
   return (
@@ -57,32 +41,10 @@ const Budgets = () => {
           <h2 className="text-3xl font-bold">Budget Goals</h2>
           <p className="text-gray-500">Track your spending against budget goals</p>
         </div>
-        <div className="flex gap-3">
-          <Button className="gradient-purple" onClick={() => setIsCategoryDialogOpen(true)}>
-            <FolderIcon className="mr-2 h-4 w-4" />
-            Add Category
-          </Button>
-          <Button className="gradient-purple" onClick={() => setIsGoalDialogOpen(true)}>
-            <PlusCircle className="mr-2 h-4 w-4" />
-            Add Goal
-          </Button>
-        </div>
-      </div>
-      
-      {/* Categories Section */}
-      <div className="mb-8">
-        <h3 className="text-xl font-semibold mb-4">Categories</h3>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-          {categories.map((category) => (
-            <div key={category.name} className="budget-card flex items-center p-4">
-              <div 
-                className="h-6 w-6 rounded-full mr-3" 
-                style={{ backgroundColor: category.color }}
-              ></div>
-              <span className="font-medium">{category.name}</span>
-            </div>
-          ))}
-        </div>
+        <Button className="gradient-purple" onClick={() => setIsGoalDialogOpen(true)}>
+          <PlusCircle className="mr-2 h-4 w-4" />
+          Add Goal
+        </Button>
       </div>
       
       {/* Budget Goals Section */}
@@ -91,6 +53,7 @@ const Budgets = () => {
           const percentSpent = Math.min((goal.spent / goal.amount) * 100, 100);
           const isOverBudget = goal.spent > goal.amount;
           const remaining = goal.amount - goal.spent;
+          const currencyCode = goal.currencyCode || "USD";
           
           return (
             <div key={goal.id} className="budget-card">
@@ -117,11 +80,11 @@ const Budgets = () => {
               <div className="flex justify-between text-sm">
                 <span className="font-medium">
                   Spent: <span className={isOverBudget ? "text-budget-red" : ""}>
-                    ${goal.spent.toFixed(2)}
+                    {formatCurrency(goal.spent, currencyCode)}
                   </span>
                 </span>
                 <span className="font-medium">
-                  Budget: ${goal.amount.toFixed(2)}
+                  Budget: {formatCurrency(goal.amount, currencyCode)}
                 </span>
               </div>
               
@@ -129,7 +92,10 @@ const Budgets = () => {
                 <div className="flex justify-between items-center">
                   <span className="text-sm font-medium">Remaining:</span>
                   <span className={`font-bold ${isOverBudget ? "text-budget-red" : "text-budget-green"}`}>
-                    {isOverBudget ? `-$${Math.abs(remaining).toFixed(2)}` : `$${remaining.toFixed(2)}`}
+                    {isOverBudget 
+                      ? `-${formatCurrency(Math.abs(remaining), currencyCode)}` 
+                      : formatCurrency(remaining, currencyCode)
+                    }
                   </span>
                 </div>
               </div>
@@ -148,19 +114,6 @@ const Budgets = () => {
             </DialogDescription>
           </DialogHeader>
           <AddBudgetGoalForm onSubmit={handleAddGoal} onCancel={handleCancelAddGoal} />
-        </DialogContent>
-      </Dialog>
-      
-      {/* Add Category Dialog */}
-      <Dialog open={isCategoryDialogOpen} onOpenChange={setIsCategoryDialogOpen}>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>Add Category</DialogTitle>
-            <DialogDescription>
-              Create a new expense category with a custom color.
-            </DialogDescription>
-          </DialogHeader>
-          <AddCategoryForm onSubmit={handleAddCategory} onCancel={handleCancelAddCategory} />
         </DialogContent>
       </Dialog>
     </Layout>

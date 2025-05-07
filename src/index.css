@@ -86,10 +86,24 @@
   }
 
   .budget-card {
-    @apply bg-white rounded-xl shadow-md p-5 hover:shadow-lg transition-shadow duration-300;
+    @apply bg-white rounded-xl shadow-md p-5 hover:shadow-lg transition-all duration-300;
   }
 
   .gradient-purple {
     @apply bg-gradient-to-br from-budget-purple to-budget-purple-dark text-white;
+  }
+}
+
+@layer utilities {
+  .text-budget-red {
+    @apply text-red-500;
+  }
+  
+  .text-budget-green {
+    @apply text-green-500;
+  }
+  
+  .hover\:scale-102:hover {
+    transform: scale(1.02);
   }
 }
