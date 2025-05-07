@@ -3,7 +3,7 @@ import { useState } from "react";
 import Layout from "@/components/Layout";
 import { categories as initialCategories, Category } from "@/lib/data";
 import { Button } from "@/components/ui/button";
-import { PlusCircle, X, Edit } from "lucide-react";
+import { PlusCircle, X, Edit, FolderIcon } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -52,10 +52,10 @@ const Categories = () => {
 
   return (
     <Layout>
-      <div className="mb-6 flex flex-wrap justify-between items-center gap-4">
+      <div className="mb-8 flex flex-wrap justify-between items-center gap-4">
         <div>
-          <h2 className="text-3xl font-bold">Categories</h2>
-          <p className="text-gray-500">Manage your expense and income categories</p>
+          <h2 className="text-3xl font-bold tracking-tight">Categories</h2>
+          <p className="text-muted-foreground mt-1">Manage your expense and income categories</p>
         </div>
         <Button className="gradient-purple" onClick={() => setIsCategoryDialogOpen(true)}>
           <PlusCircle className="mr-2 h-4 w-4" />
@@ -71,19 +71,21 @@ const Categories = () => {
           >
             <div className="flex items-center">
               <div 
-                className="h-6 w-6 rounded-full mr-3" 
+                className="h-8 w-8 rounded-full mr-3 flex items-center justify-center"
                 style={{ backgroundColor: category.color }}
-              ></div>
+              >
+                <FolderIcon className="h-4 w-4 text-white" />
+              </div>
               <span className="font-medium">{category.name}</span>
             </div>
-            <div className="flex space-x-1">
-              <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-500">
+            <div className="flex space-x-2">
+              <Button variant="ghost" size="icon" className="h-8 w-8 text-foreground/70 hover:text-foreground">
                 <Edit className="h-4 w-4" />
               </Button>
               <Button 
                 variant="ghost" 
                 size="icon" 
-                className="h-8 w-8 text-destructive hover:bg-red-100" 
+                className="h-8 w-8 text-destructive hover:bg-destructive/10" 
                 onClick={() => deleteCategory(category.name)}
               >
                 <X className="h-4 w-4" />

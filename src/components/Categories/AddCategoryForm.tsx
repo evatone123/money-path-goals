@@ -3,7 +3,6 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { v4 as uuidv4 } from "uuid";
 import { useToast } from "@/hooks/use-toast";
 
 import {
@@ -39,7 +38,7 @@ const AddCategoryForm = ({ onSubmit, onCancel }: AddCategoryFormProps) => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
-      color: "#757575",
+      color: "#9b87f5", // Default to primary purple color
     },
   });
 
@@ -52,10 +51,6 @@ const AddCategoryForm = ({ onSubmit, onCancel }: AddCategoryFormProps) => {
         color: data.color,
       });
       
-      toast({
-        title: "Category Added",
-        description: `New ${data.name} category created successfully.`,
-      });
       form.reset();
     } catch (error) {
       toast({
@@ -99,18 +94,22 @@ const AddCategoryForm = ({ onSubmit, onCancel }: AddCategoryFormProps) => {
                 <FormControl>
                   <Input
                     type="color"
-                    className="w-12 h-10 p-1 cursor-pointer"
+                    className="w-14 h-10 p-1 cursor-pointer"
                     {...field}
                   />
                 </FormControl>
-                <span className="text-sm text-gray-500">{field.value}</span>
+                <div 
+                  className="h-6 w-6 rounded-full"
+                  style={{ backgroundColor: field.value }}
+                ></div>
+                <span className="text-sm text-muted-foreground">{field.value}</span>
               </div>
               <FormMessage />
             </FormItem>
           )}
         />
 
-        <div className="flex justify-end gap-2">
+        <div className="flex justify-end gap-2 pt-2">
           <Button
             type="button"
             variant="outline"
