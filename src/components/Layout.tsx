@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { 
@@ -77,10 +76,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <div className="p-4 flex items-center justify-between">
           <div className={cn("flex items-center", sidebarOpen ? "" : "justify-center w-full")}>
             <div className="h-8 w-8 rounded-md gradient-purple flex items-center justify-center">
-              <span className="font-bold text-white">MP</span>
+              <span className="font-bold text-white">MW</span>
             </div>
             {sidebarOpen && (
-              <span className="ml-2 font-semibold text-lg text-sidebar-foreground">MoneyPath</span>
+              <span className="ml-2 font-semibold text-lg text-sidebar-foreground">MyWallet</span>
             )}
           </div>
           <Button 
@@ -190,7 +189,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 <Menu className="h-5 w-5" />
               </Button>
             )}
-            <h1 className="font-semibold text-xl">Money Path</h1>
+            <h1 className="font-semibold text-xl">MyWallet</h1>
           </div>
           <Button 
             variant="ghost" 
