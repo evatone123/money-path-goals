@@ -1,10 +1,9 @@
-
 import { useState } from "react";
 import Layout from "@/components/Layout";
 import { budgetGoals, getCategoryColor, categories as initialCategories, Category } from "@/lib/data";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
-import { PlusCircle, Category as CategoryIcon } from "lucide-react";
+import { PlusCircle, FolderIcon } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -60,7 +59,7 @@ const Budgets = () => {
         </div>
         <div className="flex gap-3">
           <Button className="gradient-purple" onClick={() => setIsCategoryDialogOpen(true)}>
-            <CategoryIcon className="mr-2 h-4 w-4" />
+            <FolderIcon className="mr-2 h-4 w-4" />
             Add Category
           </Button>
           <Button className="gradient-purple" onClick={() => setIsGoalDialogOpen(true)}>

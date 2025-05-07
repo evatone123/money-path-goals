@@ -2,7 +2,7 @@ import { useState } from "react";
 import Layout from "@/components/Layout";
 import { incomeSources, IncomeSource, IncomeFrequency } from "@/lib/data";
 import { Button } from "@/components/ui/button";
-import { PlusCircle, Category as CategoryIcon } from "lucide-react";
+import { PlusCircle, FolderIcon } from "lucide-react";
 import {
   Dialog,
   DialogContent,
